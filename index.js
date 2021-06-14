@@ -25,8 +25,18 @@ async function main() {
     let db = await connect();
 
     app.get('/animals', async (req,res)=>{
-        let animals = await db.collection('animal_shelter').find().toArray();
+        let animals = await db.collection('animals').find().toArray();
         res.json(animals)
+    })
+
+    app.post('/animals', async(req,res)=>{
+        let results = await db.collection('animals').insertOne({
+            name: req.body.name,
+            breed: req.body.breed,
+            species:req.body.species,
+            age: req.body.age
+        })
+        res.json(results.ops);
     })
 
 }
@@ -41,6 +51,6 @@ main();
 
 
 // START SERVER
-app.listen(3000, ()=>{
+app.listen(8888, ()=>{
     console.log("server has started")
 })
